@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Gallery</title>
+    <link rel="icon" type="image/x-icon" href="assets/ico.ico">
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="topnav">
+        <a href="index.html" aria-label="Start"><img src="assets/start.png" alt="Start"/></a>
+        <a href="about.html" aria-label="About me"><img src="assets/about.png" alt="About me"/></a>
+        <a href="gallery.html" class="active" aria-label="Gallery"><img src="assets/gallery.png" alt="Gallery"/></a>
+        <a href="contact.html" aria-label="Contact"><img src="assets/contact.png" alt="Contact"/></a>
+      </nav>
+    </header>
+
+    <main class="content gallery">
+      <h1></h1>
+
+      <!-- Visual Art Section -->
+      <section class="gallery-section" id="visualArtSection">
+        <h2>Visual Art</h2>
+
+        <!-- Swipe Viewer -->
+        <div class="swipe-viewer" id="swipeViewer">
+          <div class="viewer-empty" id="viewerEmpty">
+            <p>No images yet. Upload some to get started.</p>
+          </div>
+          <div class="viewer-content" id="viewerContent" style="display:none;">
+            <div class="image-container">
+              <img id="currentImage" src="" alt="Current image" />
+            </div>
+            <div class="image-description" id="imageDescription"></div>
+            <div class="nav-arrows">
+              <button class="nav-btn prev" id="prevBtn" aria-label="Previous image">‹</button>
+              <button class="nav-btn next" id="nextBtn" aria-label="Next image">›</button>
+            </div>
+            <div class="image-indicator" id="imageIndicator"></div>
+            <!-- Thumbnail grid: click a miniature to jump to that image -->
+            <div class="thumbnail-grid" id="thumbnailGrid" aria-label="Thumbnails"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Technology Section -->
+      <section class="gallery-section" id="technologySection" style="display:none;">
+        <h2>Technology</h2>
+        <div class="section-content">
+          <p class="placeholder-text">Coming soon...</p>
+        </div>
+      </section>
+
+      <!-- Music Section -->
+      <section class="gallery-section" id="musicSection" style="display:none;">
+        <h2>Music</h2>
+        <div class="section-content">
+          <p class="placeholder-text">Coming soon...</p>
+        </div>
+      </section>
+
+      <!-- Sidebar toggle for subsections -->
+      <aside class="gallery-sidebar">
+        <div class="sidebar-toggle">
+          <button class="sidebar-tab active" data-section="visualArt">Visual Art</button>
+          <button class="sidebar-tab" data-section="technology">Technology</button>
+          <button class="sidebar-tab" data-section="music">Music</button>
+        </div>
+      </aside>
+    </main>
+  </body>
+    <script src="js/margin-gif.js"></script>
+    <script src="js/gallery.js"></script>
+    <script>
+      // Gallery section switching via sidebar tabs
+      document.addEventListener('DOMContentLoaded', function () {
+        const tabs = document.querySelectorAll('.sidebar-tab');
+        const sections = document.querySelectorAll('.gallery-section');
+
+        tabs.forEach(tab => {
+          tab.addEventListener('click', function () {
+            const sectionId = this.dataset.section + 'Section';
+            
+            // Update active tab
+            tabs.forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+
+            // Hide all sections, show the selected one
+            sections.forEach(s => s.style.display = 'none');
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+              targetSection.style.display = 'block';
+            }
+          });
+        });
+      });
+    </script>
+</html>
