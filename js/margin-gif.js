@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function place() {
     const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
     const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+<<<<<<< HEAD
     
     // Hide GIF on very small screens
     if (vw < 768) {
@@ -39,6 +40,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     el.style.display = 'block';
     
+=======
+>>>>>>> d39b409a4c31fe286555f66640fd9603f7459639
     const contentHalf = 550; // half of the 1100px content width used in layout
     const baseLeft = Math.round(vw / 2 - contentHalf - 60); // base left offset into the margin
     const leftRand = baseLeft + Math.round((Math.random() * 80) - 40); // jitter +-40px
