@@ -14,13 +14,7 @@ body{
   -webkit-font-smoothing:antialiased;
 }
 .site-header{max-width:1100px;margin:28px auto 0;padding:0 20px}
-<<<<<<< HEAD
-.topnav{display:flex;gap:36px;border-bottom:3px solid var(--accent);padding-bottom:18px;flex-wrap:wrap}
-.topnav{display:flex;gap:36px;border-bottom:3px solid var(--reen);padding-bottom:18px;position:relative;flex-wrap:wrap}
-=======
-.topnav{display:flex;gap:36px;border-bottom:3px solid var(--accent);padding-bottom:18px}
-.topnav{display:flex;gap:36px;border-bottom:3px solid var(--reen);padding-bottom:18px;position:relative}
->>>>>>> d39b409a4c31fe286555f66640fd9603f7459639
+.topnav{display:flex;gap:36px;border-bottom:3px solid var(--accent);padding-bottom:18px;flex-wrap:wrap;position:relative}
 .topnav a{color:var(--accent);text-decoration:none;padding:6px 8px;font-weight:700;letter-spacing:0.5px;position:relative;border-right:3px solid var(--muted);display:inline-block}
 .topnav a:last-child{border-right:none}
 /* SVG/text labels styling: skewed to match perspective and given a stronger extruded look */
@@ -282,7 +276,6 @@ p{margin:0 0 18px 0}
 }
 .fixed-margin-gif.dragging{cursor:grabbing;transform:scale(1.02)}
 
-<<<<<<< HEAD
 @media(max-width:768px){
   .fixed-margin-gif{width:90px;top:120px}
 }
@@ -291,8 +284,6 @@ p{margin:0 0 18px 0}
   .fixed-margin-gif{width:70px;top:100px}
 }
 
-=======
->>>>>>> d39b409a4c31fe286555f66640fd9603f7459639
 /* Inline negative-margin - places image visually on the left margin next to content */
 .inline-margin-gif{
   display:block;
