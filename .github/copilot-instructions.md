@@ -45,10 +45,29 @@ Static personal portfolio website with a retro terminal aesthetic (green-on-blac
   - Image data can be serialized/deserialized to JSON for persistence
 - **To add images**: Edit `DEFAULT_IMAGES` array with new `{id, dataUrl, description}` objects; path is relative to HTML root
 
+#### `music-player.js` (New)
+- **Purpose**: Audio player for music tracks with playlist and browser-local persistence
+- **Data model**: Array of track objects `{id, url, title, description}`; defaults in `DEFAULT_TRACKS` (lines 13-17)
+- **localStorage key**: `galleryMusic`
+- **DOM structure**:
+  - `#playerEmpty` (initial state), `#playerContent` (player view)
+  - `#audioPlayer`, `#trackTitle`, `#trackDescription`, `#trackItems`
+- **Key features**:
+  - Native HTML5 audio player with controls
+  - Click track in list to play
+  - Auto-advance to next track when current ends
+  - Track list with highlighting
+  - Responsive track info display
+- **To add music**: 
+  1. Place MP3 files in `assets/music/` folder
+  2. Edit `DEFAULT_TRACKS` array with new `{id, url, title, description}` objects
+  3. URLs are relative to HTML root: `assets/music/1.mp3`
+
 ### Navigation & Client-Side Routing
-- **Gallery subsections**: Visual Art (active by default), Technology, Music—toggled via `.sidebar-tab` buttons in `gallery.html` (lines 87-102)
+- **Gallery subsections**: Visual Art (image gallery), Technology (placeholder), Music (audio player)—toggled via `.sidebar-tab` buttons in `gallery.html` (lines 86-89)
 - **Tab switching**: Data-driven (`data-section` attribute) with click handlers; shows/hides corresponding `.gallery-section` divs
-- **Pattern**: Minimal approach; each section marked `style="display:none"` initially
+- **Pattern**: Each section has own module (gallery.js for images, music-player.js for audio)
+- **Music section**: Uses native HTML5 `<audio>` element with track list and localStorage persistence
 
 ## Development Patterns
 

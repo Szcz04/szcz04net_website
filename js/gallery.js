@@ -8,6 +8,14 @@ document.addEventListener('DOMContentLoaded', function () {
   const imageIndicator = document.getElementById('imageIndicator');
   const thumbnailGrid = document.getElementById('thumbnailGrid');
 
+  // Lightbox elements
+  const lightboxModal = document.getElementById('lightboxModal');
+  const lightboxImage = document.getElementById('lightboxImage');
+  const lightboxDescription = document.getElementById('lightboxDescription');
+  const lightboxClose = document.querySelector('.lightbox-close');
+  const lightboxPrev = document.getElementById('lightboxPrev');
+  const lightboxNext = document.getElementById('lightboxNext');
+
   const STORAGE_KEY = 'galleryVisualArt';
   
   // Hardcoded images - edit this array to add your own images
@@ -117,24 +125,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Render thumbnail grid
-  function renderThumbnails() {
-    if (!thumbnailGrid) return;
-    thumbnailGrid.innerHTML = '';
-    images.forEach((img, idx) => {
-      const t = document.createElement('img');
-      t.src = img.dataUrl;
-      t.alt = img.description || '';
-      t.className = 'thumb-item';
-      if (idx === currentIndex) t.classList.add('active');
-      t.addEventListener('click', () => {
-        currentIndex = idx;
-        updateViewer();
-      });
-      thumbnailGrid.appendChild(t);
-    });
-  }
-
   function renderThumbnailsActive() {
     if (!thumbnailGrid) return;
     const thumbs = thumbnailGrid.querySelectorAll('img');
@@ -154,10 +144,124 @@ document.addEventListener('DOMContentLoaded', function () {
     updateViewer();
   });
 
+  // Lightbox functionality
+  function openLightbox(imageIndex) {
+    if (lightboxModal && lightboxImage && lightboxDescription) {
+      currentIndex = imageIndex;
+      const image = images[currentIndex];
+      lightboxImage.src = image.dataUrl;
+      lightboxDescription.textContent = image.description;
+      lightboxModal.style.display = 'block';
+      document.body.style.overflow = 'hidden'; // Prevent background scroll
+      updateLightboxNavigation();
+    }
+  }
+
+  function closeLightbox() {
+    if (lightboxModal) {
+      lightboxModal.style.display = 'none';
+      document.body.style.overflow = 'auto'; // Restore scroll
+    }
+  }
+
+  function updateLightboxNavigation() {
+    if (lightboxPrev && lightboxNext) {
+      lightboxPrev.disabled = images.length <= 1;
+      lightboxNext.disabled = images.length <= 1;
+    }
+  }
+
+  // Lightbox event listeners
+  if (lightboxClose) {
+    lightboxClose.addEventListener('click', closeLightbox);
+  }
+
+  if (lightboxModal) {
+    lightboxModal.addEventListener('click', (e) => {
+      if (e.target === lightboxModal) {
+        closeLightbox();
+      }
+    });
+  }
+
+  if (lightboxPrev) {
+    lightboxPrev.addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      const image = images[currentIndex];
+      lightboxImage.src = image.dataUrl;
+      lightboxDescription.textContent = image.description;
+    });
+  }
+
+  if (lightboxNext) {
+    lightboxNext.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % images.length;
+      const image = images[currentIndex];
+      lightboxImage.src = image.dataUrl;
+      lightboxDescription.textContent = image.description;
+    });
+  }
+
+  // Keyboard navigation for lightbox
+  document.addEventListener('keydown', (e) => {
+    if (lightboxModal && lightboxModal.style.display === 'block') {
+      if (e.key === 'Escape') {
+        closeLightbox();
+      } else if (e.key === 'ArrowLeft') {
+        lightboxPrev.click();
+      } else if (e.key === 'ArrowRight') {
+        lightboxNext.click();
+      }
+    }
+  });
+
+  // Function to jump to specific image by ID (for deep linking)
+  function jumpToImage(imageId) {
+    const imageIndex = images.findIndex(img => img.id === imageId);
+    if (imageIndex !== -1) {
+      currentIndex = imageIndex;
+      updateViewer();
+    }
+  }
+
+  // Update thumbnail click handler to jump to viewer (not lightbox)
+  function renderThumbnails() {
+    if (!thumbnailGrid) return;
+    thumbnailGrid.innerHTML = '';
+    images.forEach((image, idx) => {
+      const t = document.createElement('img');
+      t.src = image.dataUrl;
+      t.alt = image.description;
+      t.classList.add('thumb');
+      if (idx === currentIndex) t.classList.add('active');
+      t.addEventListener('click', () => {
+        currentIndex = idx;
+        updateViewer(); // Jump to viewer instead of opening lightbox
+      });
+      thumbnailGrid.appendChild(t);
+    });
+  }
+
+  // Update main image click to open lightbox
+  if (currentImage) {
+    currentImage.addEventListener('click', () => {
+      openLightbox(currentIndex);
+    });
+    currentImage.style.cursor = 'zoom-in';
+  }
+
   // Initial load
   loadImages();
   renderIndicator();
   renderThumbnails();
+
+  // Expose API for deep linking
+  window.gallery = {
+    jumpToImage: jumpToImage,
+    getCurrentImage: () => images[currentIndex],
+    getImages: () => images,
+    openLightbox: openLightbox
+  };
 });
 
 

@@ -56,8 +56,31 @@
       <!-- Music Section -->
       <section class="gallery-section" id="musicSection" style="display:none;">
         <h2>Music</h2>
-        <div class="section-content">
-          <p class="placeholder-text">Coming soon...</p>
+        
+        <!-- Music Player -->
+        <div class="music-player" id="musicPlayer">
+          <div class="player-empty" id="playerEmpty">
+            <p>No music tracks yet. Add some to get started.</p>
+          </div>
+          <div class="player-content" id="playerContent" style="display:none;">
+            <div class="track-info">
+              <div class="track-title" id="trackTitle"></div>
+              <div class="track-description" id="trackDescription"></div>
+            </div>
+            <div class="audio-controls">
+              <audio id="audioPlayer" controls>
+                <p>Your browser does not support HTML5 audio.</p>
+              </audio>
+            </div>
+            <div class="track-nav">
+              <button class="track-nav-btn prev" id="prevTrackBtn" aria-label="Previous track">‹ Prev</button>
+              <button class="track-nav-btn next" id="nextTrackBtn" aria-label="Next track">Next ›</button>
+            </div>
+            <div class="track-list">
+              <div class="track-list-header">Tracks</div>
+              <div class="track-items" id="trackItems"></div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -70,31 +93,131 @@
         </div>
       </aside>
     </main>
+
+    <!-- Image Lightbox Modal -->
+    <div id="lightboxModal" class="lightbox-modal">
+      <div class="lightbox-content">
+        <span class="lightbox-close">&times;</span>
+        <img id="lightboxImage" class="lightbox-image" alt="Full resolution image">
+        <div class="lightbox-description" id="lightboxDescription"></div>
+        <div class="lightbox-navigation">
+          <button id="lightboxPrev" class="lightbox-nav-btn">‹</button>
+          <button id="lightboxNext" class="lightbox-nav-btn">›</button>
+        </div>
+      </div>
+    </div>
   </body>
     <script src="js/margin-gif.js"></script>
     <script src="js/gallery.js"></script>
+    <script src="js/music-player.js"></script>
     <script>
-      // Gallery section switching via sidebar tabs
+      // Gallery section switching via sidebar tabs with URL routing and persistent state
       document.addEventListener('DOMContentLoaded', function () {
         const tabs = document.querySelectorAll('.sidebar-tab');
         const sections = document.querySelectorAll('.gallery-section');
+        const TAB_STATE_KEY = 'galleryActiveTab';
 
+        // URL Hash routing and state management
+        function initializeGallery() {
+          const hash = window.location.hash;
+          let activeTab = 'visualArt';
+          let targetId = null;
+
+          // Parse URL hash for deep linking
+          if (hash) {
+            if (hash.startsWith('#music-track-')) {
+              activeTab = 'music';
+              targetId = parseInt(hash.replace('#music-track-', ''));
+            } else if (hash.startsWith('#visual-art-')) {
+              activeTab = 'visualArt';
+              targetId = parseInt(hash.replace('#visual-art-', ''));
+            } else if (hash.startsWith('#technology-')) {
+              activeTab = 'technology';
+              targetId = parseInt(hash.replace('#technology-', ''));
+            } else if (hash === '#music') {
+              activeTab = 'music';
+            } else if (hash === '#technology') {
+              activeTab = 'technology';
+            } else if (hash === '#visual-art') {
+              activeTab = 'visualArt';
+            }
+          } else {
+            // Restore from localStorage if no hash
+            const saved = localStorage.getItem(TAB_STATE_KEY);
+            if (saved) {
+              activeTab = saved;
+            }
+          }
+
+          // Set active tab
+          setActiveTab(activeTab, targetId);
+        }
+
+        function setActiveTab(tabName, targetId = null) {
+          // Update active tab
+          tabs.forEach(tab => {
+            tab.classList.toggle('active', tab.dataset.section === tabName);
+          });
+
+          // Show appropriate section
+          sections.forEach(section => {
+            section.style.display = section.id === (tabName + 'Section') ? 'block' : 'none';
+          });
+
+          // Save state to localStorage
+          localStorage.setItem(TAB_STATE_KEY, tabName);
+
+          // Update URL hash without triggering reload
+          const hashMap = {
+            'visualArt': '#visual-art',
+            'music': '#music',
+            'technology': '#technology'
+          };
+          
+          let newHash = hashMap[tabName] || '#visual-art';
+          if (targetId) {
+            if (tabName === 'music') {
+              newHash = `#music-track-${targetId}`;
+            } else if (tabName === 'visualArt') {
+              newHash = `#visual-art-${targetId}`;
+            }
+          }
+          
+          history.replaceState(null, null, newHash);
+
+          // Handle specific content targeting
+          if (targetId && tabName === 'music') {
+            // Wait for music player to initialize
+            setTimeout(() => {
+              if (window.musicPlayer && window.musicPlayer.jumpToTrack) {
+                window.musicPlayer.jumpToTrack(targetId);
+              }
+            }, 500);
+          } else if (targetId && tabName === 'visualArt') {
+            // Wait for gallery to initialize
+            setTimeout(() => {
+              if (window.gallery && window.gallery.jumpToImage) {
+                window.gallery.jumpToImage(targetId);
+              }
+            }, 500);
+          }
+        }
+
+        // Handle tab clicks
         tabs.forEach(tab => {
           tab.addEventListener('click', function () {
-            const sectionId = this.dataset.section + 'Section';
-            
-            // Update active tab
-            tabs.forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
-
-            // Hide all sections, show the selected one
-            sections.forEach(s => s.style.display = 'none');
-            const targetSection = document.getElementById(sectionId);
-            if (targetSection) {
-              targetSection.style.display = 'block';
-            }
+            const sectionName = this.dataset.section;
+            setActiveTab(sectionName);
           });
         });
+
+        // Handle browser back/forward
+        window.addEventListener('hashchange', function () {
+          initializeGallery();
+        });
+
+        // Initialize on load
+        initializeGallery();
       });
     </script>
 </html>
