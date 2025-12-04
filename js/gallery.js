@@ -226,13 +226,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Update thumbnail click handler to jump to viewer (not lightbox)
   function renderThumbnails() {
-    if (!thumbnailGrid) return;
+    if (!thumbnailGrid) {
+      console.error('thumbnailGrid element not found');
+      return;
+    }
+    console.log('Rendering', images.length, 'thumbnails');
     thumbnailGrid.innerHTML = '';
     images.forEach((image, idx) => {
       const t = document.createElement('img');
       t.src = image.dataUrl;
       t.alt = image.description;
-      t.classList.add('thumb');
+      t.className = 'thumb';
       if (idx === currentIndex) t.classList.add('active');
       t.addEventListener('click', () => {
         currentIndex = idx;
@@ -240,6 +244,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
       thumbnailGrid.appendChild(t);
     });
+    console.log('Thumbnails rendered:', thumbnailGrid.children.length);
   }
 
   // Update main image click to open lightbox

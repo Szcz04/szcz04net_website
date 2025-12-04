@@ -45,9 +45,9 @@
         </div>
       </section>
 
-      <!-- Technology Section -->
-      <section class="gallery-section" id="technologySection" style="display:none;">
-        <h2>Technology</h2>
+      <!-- tech Section -->
+      <section class="gallery-section" id="techSection" style="display:none;">
+        <h2>tech</h2>
         <div class="section-content">
           <p class="placeholder-text">Coming soon...</p>
         </div>
@@ -88,7 +88,7 @@
       <aside class="gallery-sidebar">
         <div class="sidebar-toggle">
           <button class="sidebar-tab active" data-section="visualArt">Visual Art</button>
-          <button class="sidebar-tab" data-section="technology">Technology</button>
+          <button class="sidebar-tab" data-section="tech">tech</button>
           <button class="sidebar-tab" data-section="music">Music</button>
         </div>
       </aside>
@@ -131,13 +131,13 @@
             } else if (hash.startsWith('#visual-art-')) {
               activeTab = 'visualArt';
               targetId = parseInt(hash.replace('#visual-art-', ''));
-            } else if (hash.startsWith('#technology-')) {
-              activeTab = 'technology';
-              targetId = parseInt(hash.replace('#technology-', ''));
+            } else if (hash.startsWith('#tech-')) {
+              activeTab = 'tech';
+              targetId = parseInt(hash.replace('#tech-', ''));
             } else if (hash === '#music') {
               activeTab = 'music';
-            } else if (hash === '#technology') {
-              activeTab = 'technology';
+            } else if (hash === '#tech') {
+              activeTab = 'tech';
             } else if (hash === '#visual-art') {
               activeTab = 'visualArt';
             }
@@ -171,7 +171,7 @@
           const hashMap = {
             'visualArt': '#visual-art',
             'music': '#music',
-            'technology': '#technology'
+            'tech': '#tech'
           };
           
           let newHash = hashMap[tabName] || '#visual-art';
