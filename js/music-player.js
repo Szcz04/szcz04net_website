@@ -13,12 +13,11 @@ document.addEventListener('DOMContentLoaded', function () {
   // Default music tracks - edit this array to add your own mp3 files
   const DEFAULT_TRACKS = [
     { id: 1, url: 'assets/music/1.mp3', title: 'Lurkin', description: "" },
-    { id: 2, url: 'assets/music/2.mp3', title: 'psx', description: "" },
+    { id: 2, url: 'assets/music/2.mp3', title: 'Alien_shooter_remix', description: "Beat with melody sampled from main theme of 'Alien shooter' game"  },
     { id: 3, url: 'assets/music/3.mp3', title: 'Fever_Dream', description: "track for indie game project" },
     { id: 4, url: 'assets/music/4.mp3', title: 'Bubbles', description: "track for indie game project" },
     { id: 5, url: 'assets/music/5.mp3', title: 'Warrior_Cats', description: "track for indie game project" },
-    { id: 6, url: 'assets/music/6.mp3', title: 'Alien_shooter_remix', description: "Beat with melody sampled from main theme of 'Alien shooter' game" },
-    { id: 7, url: 'assets/music/7.mp3', title: 'Chase', description: "spooky track for indie game project" },
+    { id: 6, url: 'assets/music/6.mp3', title: 'Chase', description: "spooky track for indie game project"},
   ];
 
   let tracks = [];

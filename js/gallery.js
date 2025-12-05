@@ -21,26 +21,28 @@ document.addEventListener('DOMContentLoaded', function () {
   // Hardcoded images - edit this array to add your own images
   const DEFAULT_IMAGES = [
     { id: 1, dataUrl: 'assets/visual_art/1.png', description: '3D model of my OC' },
-    { id: 2, dataUrl: 'assets/visual_art/2.png', description: 'Quick clothes studies' },
-    { id: 3, dataUrl: 'assets/visual_art/3.png', description: 'Random fragment of my sketchbook' },
-    { id: 4, dataUrl: 'assets/visual_art/4.png', description: 'Random fragment of my sketchbook' },
-    { id: 5, dataUrl: 'assets/visual_art/5.png', description: 'Random fragment of my sketchbook' },
-    { id: 6, dataUrl: 'assets/visual_art/6.png', description: 'Random fragment of my sketchbook'},
-    { id: 7, dataUrl: 'assets/visual_art/7.png', description: 'Random fragment of my sketchbook' },
-    { id: 8, dataUrl: 'assets/visual_art/8.png', description: 'Random fragment of my sketchbook' },
-    { id: 9, dataUrl: 'assets/visual_art/9.png', description: 'Random fragment of my sketchbook' },
-    { id: 10, dataUrl: 'assets/visual_art/10.png', description: 'Digital WIP of my OC' },
-    { id: 11, dataUrl: 'assets/visual_art/11.png', description: 'Random fragment of my sketchbook' },
-    { id: 12, dataUrl: 'assets/visual_art/12.png', description: 'Sketches of Terry Davis, The smartest programmer that has ever lived' },
+    { id: 2, dataUrl: 'assets/visual_art/2.png', description: '3D render - fragment of WIP environment for game' },
+    { id: 3, dataUrl: 'assets/visual_art/3.png', description: 'fragment of my sketchbook' },
+    { id: 4, dataUrl: 'assets/visual_art/4.png', description: 'fragment of my sketchbook' },
+    { id: 5, dataUrl: 'assets/visual_art/5.png', description: 'fragment of my sketchbook' },
+    { id: 6, dataUrl: 'assets/visual_art/6.png', description: 'fragment of my sketchbook'},
+    { id: 7, dataUrl: 'assets/visual_art/7.png', description: 'fragment of my sketchbook' },
+    { id: 8, dataUrl: 'assets/visual_art/8.png', description: 'fragment of my sketchbook' },
+    { id: 9, dataUrl: 'assets/visual_art/9.png', description: 'fragment of my sketchbook' },
+    { id: 10, dataUrl: 'assets/visual_art/10.png', description: 'My OC in digital' },
+    { id: 11, dataUrl: 'assets/visual_art/11.png', description: 'fragment of my sketchbook' },
+    { id: 12, dataUrl: 'assets/visual_art/12.png', description: 'Terry Davis, The smartest programmer that has ever lived' },
     { id: 13, dataUrl: 'assets/visual_art/13.png', description: 'Digital character concept' },
-    { id: 14, dataUrl: 'assets/visual_art/14.png', description: 'Random fragment of my sketchbook' },
-    { id: 15, dataUrl: 'assets/visual_art/15.png', description: 'Random fragment of my sketchbook' },
-    { id: 16, dataUrl: 'assets/visual_art/16.png', description: 'Random fragment of my sketchbook' },
-    { id: 17, dataUrl: 'assets/visual_art/17.png', description: 'Random fragment of my sketchbook' },
+    { id: 14, dataUrl: 'assets/visual_art/14.png', description: 'fragment of my sketchbook' },
+    { id: 15, dataUrl: 'assets/visual_art/15.png', description: 'fragment of my sketchbook' },
+    { id: 16, dataUrl: 'assets/visual_art/16.png', description: 'fragment of my sketchbook' },
+    { id: 17, dataUrl: 'assets/visual_art/17.png', description: 'fragment of my sketchbook' },
     { id: 18, dataUrl: 'assets/visual_art/18.png', description: 'Digital character concept' },
-    { id: 19, dataUrl: 'assets/visual_art/19.png', description: 'Random fragment of my sketchbook' },
-    { id: 20, dataUrl: 'assets/visual_art/20.png', description: 'Commisioned work' },
-    { id: 21, dataUrl: 'assets/visual_art/21.png', description: 'Random fragment of my sketchbook' }
+    { id: 19, dataUrl: 'assets/visual_art/19.png', description: 'fragment of my sketchbook' },
+    { id: 20, dataUrl: 'assets/visual_art/20.png', description: 'Commisioned OC' },
+    { id: 21, dataUrl: 'assets/visual_art/21.png', description: 'fragment of my sketchbook' },
+     { id: 22, dataUrl: 'assets/visual_art/22.png', description: 'Quick clothes studies' },
+     { id: 23, dataUrl: 'assets/visual_art/23.png', description: 'Comissioned CD cover of an album' }
   ];
 
   let images = [];
@@ -52,6 +54,13 @@ document.addEventListener('DOMContentLoaded', function () {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
         images = JSON.parse(stored);
+        // Force update if number of images changed or content differs
+        if (images.length !== DEFAULT_IMAGES.length || 
+            JSON.stringify(images) !== JSON.stringify(DEFAULT_IMAGES)) {
+          console.log('Gallery updated: refreshing from defaults');
+          images = DEFAULT_IMAGES.map(img => ({...img}));
+          saveImages();
+        }
       } else {
         images = DEFAULT_IMAGES.map(img => ({...img}));
         saveImages();
